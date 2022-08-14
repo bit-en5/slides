@@ -1,0 +1,1020 @@
+Go introduction for apprentices
+10-12 August 2022
+
+Laurent Brülhart, BIT-EN5
+Carli Beeli, BIT-EN5
+laurent.bruelhart@bit.admin.ch
+carli.beeli@bit.admin.ch
+
+* Go introduction
+Welcome to the Go course
+.image image/go.png
+*Objectives:*
+Learning Go by doing:
+
+- Day 1: Web Application
+- Day 2: OOP
+- Day 3: CLI application
+
+* Why Go ?
+
+- is an open source programming language supported by Google
+- has a garbage collector
+- is easy to learn
+- has a growing ecosystem of partners, communities, and tools
+- is very fast
+- as built-in concurrency and a robust standard library
+- multi-paradigm (procedural, OOP, FP)
+
+*Go*is*a*pragmatic*programming*language*
+
+* Go is built for concurrency
+
+.image image/42-Years-of-Microprocessor-Trend-Data.png
+
+* Most common Go applications
+
+- Fast and elegant CLIs
+- Web Development
+- Cloud-Native Applications
+- Distributed Networked Services
+- Utilities And Stand-alone Tools
+
+.link https://go.dev/solutions/#use-cases Use cases
+
+* Releases
+
+.link https://github.com/bit-en5/guide/blob/main/images/go-history.png History
+.link https://go.dev/project 2 releases / year
+    Current version : 1.19
+
+* Courses 1/2
+
+.link https://go.dev/doc/tutorial/getting-started Get started
+.link https://www.youtube.com/results?search_query=golang Youtube
+.link https://www.udemy.com/courses/search/?src=ukw&q=golang Udemy
+.link https://www.manning.com Manning
+.link https://www.pluralsight.com/search?q=go&categories=all Puralsight
+.link https://www.ardanlabs.com Ardan labs
+.link https://subscription.packtpub.com/search?query=golang PacktPub
+.link https://leanpub.com/bookstore?search=golang&type=all Leanpub
+.link https://www.oreilly.com O'Reilly
+
+* Courses 2/2
+
+.link https://www.educative.io/explore?search=true&search_string=golang&free=false&pageNo=1 Educative.io
+.link https://www.codecademy.com/catalog/language/go codecademy
+.link https://hackr.io/blog/best-golang-certification-courses hackr.io
+.link https://www.coursera.org/specializations/google-golang coursera
+.link https://www.linkedin.com/learning/topics/go Linkedin
+.link https://link.springer.com/search?query=golang&searchType=publisherSearch Apress
+
+*Books*
+
+.link https://github.com/bit-en5/learning Books
+
+* Installation
+
+.link https://go.dev/dl/ Download from official website
+
+* IDE
+
+.link https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins#editors-and-ides-for-go Editors and IDEs for Go:
+
+- VSCode (Microsoft)
+- Goland / IntelliJ (JetBrains)
+- Sublime Text
+- Vim / NeoVim
+- ...
+
+* Tooling
+Display all environment variables:
+
+    go env
+
+Take a look at GOPATH: this is where projects should be placed. 
+
+* Project path
+Create your project in GOPATH directory:
+
+    <GOPATH>/<scm>/<project-repo>
+
+Example:
+
+    ~/go/src/github.com/bit-en5/hello
+
+* Hello World
+
+.play contents/code/hello/hello.go
+
+.link https://go.dev/play/ Playground
+
+* Tooling
+
+Formatting code:
+
+    go fmt
+
+* Tooling
+
+Activate dependencies list:
+
+Initialize library dependency management (mandatory since Go 1.16):
+
+    go mod init
+
+Synchronize go.mod with the source code:
+
+    go mod tidy
+
+Copy all third-party dependencies:
+
+    go mod vendor
+
+* Tooling
+Create a binary file:
+
+    go build
+
+Create binary for another platform:
+.link https://go.dev/doc/install/source#environment GOOS & GOARCH
+
+Example:
+
+    GOOS=linux GOARCH=amd64 go build -o dist/myApp
+
+* Tooling
+*Need*smaller*size*?*
+
+Strip the debugging information:
+
+    go build -ldflags="-s -w"
+
+.link https://itnext.io/shrinking-go-executable-9e9c17b47a41 More shrink with UPX (Linux)
+
+Still too big ?
+
+.link https://tinygo.org tinygo
+(for microcontroller)
+
+: https://pouyacode.net/executable-size-of-different-compilers.html
+
+* Tooling
+Execute the application without compile it (for test purpose):
+
+    go run .
+
+* Tooling
+Go applications can be installed with:
+
+    go install
+
+Example:
+
+    go install golang.org/x/tools/cmd/present@latest
+
+* Tooling
+Examines Go source code and reports suspicious constructs:
+
+    go vet
+
+Same in all folders:
+
+    go vet ./...
+
+* Workshop 1
+Build a Web Server
+.image image/http.png
+
+* Web Server Workshop
+Embed a web server in Go:
+
+    http.ListenAndServe(":8080", nil)
+
+or, in a more idiomatic way:
+
+.code contents/code/ws1/main.go /START1/,/END/
+
+.link https://www.digitalocean.com/community/tutorials/how-to-make-an-http-server-in-go More details
+
+* Web Server Workshop
+Add a file Server
+
+.code contents/code/ws1/main.go /START2/,/END/
+
+Now create an assets directory in your project and add an index.html file, for instance:
+
+.code contents/code/assets/index.html
+
+* Built-in types and structs
+
+- Numeric : byte, int, int8, int16, int32, int64, rune, uint, uint8, uint16, uint32, uint64, complex64, complex128, uintptr, float32, float64
+ → Zero-Value: 0
+- String : string → Zero-Value: ""
+- Boolean : bool → Zero-Value: false
+- Error: error → Zero-Value: nil
+
+.link https://go.dev/play/p/x7DftDbuBH4 Playground
+
+* Variable declaration
+
+- var i int
+- var i int = 15
+- var i = 15  // inference
+- i := 31 // inference
+- s := `line 1
+line 2` // inference
+
+- s := "Hello\nworld!\t\n\"你好世界\""
+- 世界 := "hello"   // 🤬
+- var piValue, piName = 3.14, "pi"  // inference 😐
+- r := 'a' // 🛑 it's a rune, not a string (a rune is an alias for int32)
+
+.link https://go.dev/play/p/fd9OlAwRb02 Playground
+
+* Variable declaration
+Prefer factorisation. 
+
+Rather than that:
+
+.code contents/code/var1/var.go /START1/,/END1/
+
+write instead:
+
+.code contents/code/var2/var.go /START2/,/END2/
+
+* Numeric literal
+
+- v := 0b1011	// 11 → binary (0b or 0B) → since Go 1.13
+- v := 0xffff	// 65535 → hexa (0x or 0X)
+- v := 0o123	// 83 → octal (0o or 0O) → since Go 1.13
+- v := 1_000_000 	// → since Go 1.13
+- v := 1.23e2 	// 123.0 
+
+.link https://go.dev/play/p/zBfrVfssDVY Playground
+
+* Variable scope
+
+- Global
+- Local in function
+- Local in code block
+
+.link https://go.dev/play/p/xePnsMhSEzT Playground
+
+* Loops
+
+.code contents/code/for/for.go /START/,/END/
+
+.link https://go.dev/play/p/hDod9TnA6lL Playground
+
+* Standard Libraries
+
+.link https://pkg.go.dev/std Official Go documentation
+
+: have a look on fmt (verbs + Printf function with example)
+
+* Comments
+
+- // …		// → single line
+- /*        → multiple line
+…
+*/
+
+* Keywords
+Go has 25 reserved keywords
+
+.image image/go-keywords.png
+
+.link https://stackoverflow.com/questions/4980766/reserved-keywords-count-by-programming-language Keywords by programming language
+
+* Web Server Workshop
+Refactoring:
+
+.code contents/code/ws2/const.go
+
+* Constants
+Constants have not type:
+.code contents/code/const/const.go /START1/,/END1/
+
+Prefer the factorised form:
+.code contents/code/const/const.go /START2/,/END2/
+
+Constants have iota:
+.code contents/code/const/const.go /START3/,/END3/
+
+.link https://go.dev/play/p/yCeTT6efM3l Playground
+
+* Bitwise operators
+
+.play contents/code/bitwise/bitwise.go
+
+.link https://go.dev/play/p/s_opOrf8te1 Playground
+
+* Web Server Workshop
+
+.image image/http-response.jpg 500 500
+
+* Web Server Workshop
+Add an endpoint:
+
+    http.HandleFunc("/api/hello", sayHello)
+
+The linked function must have this signature: 
+
+.code contents/code/ws1/sayHello.go /START/,/END/
+
+The http status code can be changed:
+
+    w.WriteHeader(http.StatusCreated)
+
+.link https://go.dev/src/net/http/status.go http status constants
+
+* Web Server Workshop
+Respond with a json object:
+
+.code contents/code/ws1/json.go /START/,/END/
+
+* Structs
+
+- Declaration
+
+.code contents/code/struct/struct.go /START1/,/END1/
+
+- Literal
+
+.code contents/code/struct/struct.go /START2/,/END2/
+
+.link https://go.dev/play/p/AmB5jQTIcB3 Playground
+
+* Public / Private
+
+By convention, it's public if it's begin with uppercase and private if it's begin with lowercase:
+
+.code contents/code/public/public.go /START/,/END/
+
+* Tags
+
+.code contents/code/type/type.go /START/,/END/
+
+You can also implement your own tags:
+.link https://go.dev/play/p/9vTa7PbUF43 Playground
+
+* Web Server Workshop
+Read client info from request:
+
+.code contents/code/ws1/user-agent.go /START/,/END/
+
+* Web Server Workshop
+Read query param:
+.code contents/code/ws1/readQueryParam.go /START/,/END/
+
+* Control Flow - if
+
+.code contents/code/if/if.go /START1/,/END1/
+
+* Control Flow - if else
+
+.code contents/code/if/if.go /START2/,/END2/
+
+* Control Flow - switch
+
+.code contents/code/switch/switch.go /START/,/END/
+
+.link https://go.dev/play/p/EftS3gUbikl Playground > fallthrough
+
+* Web Server Workshop
+Add Header for data format:
+
+	w.Header().Set("Content-Type", "application/json")
+
+.link https://en.wikipedia.org/wiki/List_of_HTTP_header_fields Wikipedia
+
+* Web Server Workshop
+Add Header for CORS (security)
+
+	w.Header().Set("Access-Control-Allow-Origin", "localhost:*")
+
+Additional security Headers:
+
+.code contents/code/ws1/headers.go /START/,/END/
+
+* Create our own server mux
+
+.code contents/code/ws3/mux.go
+
+* Middleware
+Create a security handler:
+
+.code contents/code/middleware/middleware.go /START4/,/END4/
+
+* Middleware
+Create a panic handler:
+
+.code contents/code/middleware/middleware.go /START6/,/END6/
+
+* Middleware
+Create a CORS handler:
+
+.code contents/code/middleware/middleware.go /START5/,/END5/
+
+* Middleware
+Link all handlers together:
+
+.code contents/code/middleware/middleware.go /START2/,/END2/
+
+* Middleware
+Add our middleware to the server mux:
+
+.code contents/code/middleware/middleware.go /START1/,/END1/
+
+* Middleware
+Other middlewares to implement:
+
+- authentication
+- authorization
+- logging
+- RequestID
+- timeout
+- gzip
+- caching
+- ...
+
+* Defer
+
+.link https://go.dev/tour/flowcontrol/12 Tour of Go
+
+.link https://go.dev/play/p/jUvOs9eEPst Playground
+
+* Recover
+
+panic terminates the program, unless recover is used
+
+.link https://go.dev/play/p/rSYWjlrzVD7 Playground
+
+log.Fatal is similar to:
+
+.code contents/code/fatal/fatal.go /START/,/END/
+
+with os.Exit(..):
+
+- recover doesn't work
+- defer statements in other goroutines don’t run
+- buffers aren’t flushed
+- temporary files and directories aren’t removed
+
+* Exercise 1
+
+Add a logging middleware in order to display the time an endpoint has been called.
+
+* Web Server 3rd-Party library
+
+3rd-party libraries enhance the standard library with features and, sometimes, better performance.
+
+.link https://github.com/smallnest/go-web-framework-benchmark 3rd-Party libraries
+
+* Web Server Workshop
+Let's implement Gorilla:
+
+    go get github.com/gorilla/mux
+
+go get allows to download a 3rd-Party library (will be copied in $HOME/go/src/pkg/mod)
+
+* Web Server Workshop
+
+.code contents/code/ws4/gorilla.go /START/,/END/
+
+* Web Server Workshop
+Create a new endpoint:
+
+    r.HandleFunc("/api/books/{isbn}", getBook)
+
+or, prefer to write:
+
+	r.Handle("/api/books/{isbn}", http.HandlerFunc(getBook)).Methods("GET")
+
+Read path variable from request:
+
+.code contents/code/ws1/book.go /START/,/END/
+
+* Exercise 2
+
+*Create*a*GET*endpoint*to*get*all*books.*
+
+- Create a new directory book in the project
+- Create a new file model.go in this directory
+- Complete model.go with the following code:
+
+.code contents/code/book/model.go
+
+* Exercise 2
+
+- Create a new file list.go in the directory book
+- Complete list.go with the following code:
+
+.code contents/code/book/list.go
+
+* Exercise 2
+In main.go:
+
+- Create the handler that will get the books from the book package, marshal it and returns the bytes 
+- Create the route and link to the handler
+
+* Package
+
+- Import
+- Alias
+- Dot identifier (do not use)
+- Blank identifier
+
+.link https://go.dev/blog/package-names Package names
+
+* Collections
+This is only 3 types of collection in Go:
+
+- Array
+
+.link https://gobyexample.com/arrays Array
+
+- Slice
+
+.link https://gobyexample.com/slices Slice
+
+- Map
+
+.link https://gobyexample.com/maps Map
+
+Demo
+
+
+* Sort
+
+.code contents/code/book/sort.go /START1/,/END1/
+
+* Exercise 3
+
+Complete the endpoint with a query param to sort books by: 
+
+- *title* (/api/books?sortedBy=title)
+- *author* (/api/books?sortedBy=author)
+- *year* (/api/books?sortedBy=year)
+- *pages* (/api/books?sortedBy=pages)
+
+* Exercise 4
+
+Complete the endpoint with query params for pagination: 
+/api/books?page=1&size=3
+
+* Concurrency and parallelism
+.image image/concurrency-parallelism.png
+
+.link https://go.dev/talks/2012/waza.slide#1 Rob Pike Presentation
+
+* Goroutines
+
+- Thread: managed by OS / cost: 2MB of RAM
+- Goroutine: managed by Go / cost: 2kB of RAM
+
+Use:
+.code contents/code/goroutine/go.go /START/,/END/
+
+* Race conditions
+
+Counter Demo with:
+- unsafe 
+- safe with lock
+- safe with channel
+
+* Graceful shutdown
+Other use of channel:
+.code contents/code/ws1/graceful.go /START/,/END/
+
+* Functions
+
+* Functions
+This a public function:
+.code contents/code/func1/func.go /START1/,/END1/
+
+This a private function with 1 param:
+.code contents/code/func1/func.go /START2/,/END2/
+
+* Functions
+This a public function with 3 params
+.code contents/code/func1/func.go /START3/,/END3/
+
+Another way to write the same function:
+.code contents/code/func2/func.go /START4/,/END4/
+
+* Functions
+Variadic:
+.code contents/code/variadic1/variadic.go /START1/,/END1/
+
+- the function can be called with any number of arguments
+- max 1 variadic by function
+- variadic must be the last param
+- within the function, the param is equivalent to *[]<type>* (in this example []int)
+
+* Functions
+Return a value:
+.code contents/code/variadic2/variadic.go /START2/,/END2/
+
+Return values may be named: (look at the parentheses)
+.code contents/code/variadic3/variadic.go /START3/,/END3/
+
+* Functions
+Return multiple values: (look at the parentheses)
+.code contents/code/variadic4/variadic.go /START4/,/END4/
+
+Simplify code and readability with multiple named returned values:
+.code contents/code/variadic5/variadic.go /START5/,/END5/
+
+* Exercise 5
+
+- Create a new package reverso
+- Create a function Reverse that will reverse the given string.
+Example:
+    → *Input:* Hello
+    → *Ouput:* olleH
+
+* Unit Test
+Add unit test and benchmaks to reverso.Reverse:
+.code contents/code/test/reverse_test.go /START1/,/END1/
+
+- the test function must begin with *Test*
+- the function must be in a file whose name ends with *_test.go*
+
+* Unit Test
+Refactoring of the previous test:
+.code contents/code/test/reverse_test.go /START2/,/END2/
+
+* Benchmark
+.code contents/code/test/reverse_test.go /START3/,/END3/
+
+* Example
+.code contents/code/test/reverse_test.go /START4/,/END4/
+- example is used as a test
+- example is used in the documentation
+
+* Documentation
+Installation:
+
+    go install golang.org/x/tools/cmd/godoc
+
+Start a web server that presents the documentation:
+
+    godoc -http=:6060
+
+- Look for the documentation of your reverso package
+- Add the comments to your package reverso
+- Add the comments to your function Reverse
+- Restart the doc server and check the reverso documentation
+
+
+* Functions
+Idiomatic way to work with functions:
+.code contents/code/func2/func.go /START9/,/END9/
+
+* Functions
+Idiomatic way to work with functions:
+.code contents/code/func2/func.go /START10/,/END10/
+.link https://go.dev/play/p/oF1N2Jy45ia Playground
+
+* Functions
+Anonymous function:
+.code contents/code/func1/func.go /START5/,/END5/
+
+Anonymous function with param:
+.code contents/code/func1/func.go /START6/,/END6/
+
+.link https://go.dev/play/p/Q6IN3tGv6Eb Playground
+
+* Functions
+Function as value of a variable:
+.code contents/code/func1/func.go /START7/,/END7/
+
+* Functions
+Functions are first class citizen in Go:
+.code contents/code/func2/func.go /START8/,/END8/
+.link https://go.dev/play/p/YK_-DjpbAzq Playground
+
+* Funtions
+Closure:
+.code contents/code/closure/closure.go /START1/,/END1/
+.link https://go.dev/play/p/yjLn0Rbo-ur Playground
+
+* Pointers
+.code contents/code/pointer1/pointer.go  /START1/,/END1/
+.image image/pointers.png
+.link https://go.dev/play/p/MM8MRl5NTeS Playground
+
+* Pointers
+Use & if you want to get that variable's memory address:
+.code contents/code/pointer1/pointer.go  /START2/,/END2/
+
+Use * to indicate that a memory address is expected:
+.code contents/code/pointer1/pointer.go  /START3/,/END3/
+
+Use * to modify the value related to a memory address:
+Note: *It*is*rarely*used*in*this*form*
+.code contents/code/pointer1/pointer.go  /START4/,/END4/
+.link https://go.dev/play/p/jF4QB9eHSxK Playground
+
+* Passing params by value or by reference ?
+.code contents/code/passby/passby.go /START1/,/END1/
+.link https://go.dev/play/p/Rtwn79QIsPE Playground
+
+* How to pass by reference ?
+.code contents/code/pointer2/pointer.go
+.link https://play.golang.org/p/hsTvXWXPAbX Playground
+
+* OOP
+.image image/solid-fundations.jpg
+But, is Go an OOP language ?
+
+* OOP
+According to *Wikipedia*:
+"Object-oriented programming (OOP) is a programming paradigm based on the concept of "objects", which can contain data and code: data in the form of fields (often known as attributes or properties), and code, in the form of procedures (often known as methods)."
+.link https://en.wikipedia.org/wiki/Object-oriented_programming Source
+
+* OOP
+
+- 👍 class → struct
+- 👍 properties
+- 👍 constructor
+- 👍 method
+- 👍 public / private
+- 👍 singleton
+- ❌ overriding
+- ❌ inheritance
+- 👍 composition
+- 👍 overloading
+- 👍 polymorphism
+- 👍 dependency injection
+
+* OOP
+👍 class → struct
+👍 properties
+.code contents/code/struct/struct.go /START1/,/END1/
+or:
+.code contents/code/struct/struct.go /START3/,/END3/
+
+* OOP
+👍 constructor
+.code contents/code/struct/constructor.go /START1/,/END1/
+
+with parameters:
+.code contents/code/struct/constructor.go /START2/,/END2/
+
+* OOP
+👍 method
+👍 public / private
+.code contents/code/rectangle/rectangle.go /START2/,/END2/
+
+* OOP
+👍 singleton
+.code contents/code/singleton1/singleton.go /START/,/END/
+
+* OOP
+Another way to write a singleton:
+.code contents/code/singleton2/singleton.go /START/,/END/
+
+* OOP
+❌ overriding
+
+If such a function exists:
+
+    func New() int {}
+
+it's *not*possible* to use the same function or method name with another signature:
+
+    func New(value int) int {}
+
+* OOP
+❌ inheritance
+.link https://neethack.com/2017/04/Why-inheritance-is-bad/ Why inheritance is bad?
+
+Prefer composition instead
+
+* OOP
+👍 composition
+.code contents/code/composition/composition.go /START1/,/END1/
+.link https://go.dev/play/p/ByAFwD3_pA1 Playground
+
+* OOP
+👍 overloading
+.code contents/code/composition/overloading.go /START1/,/END1/
+.link https://go.dev/play/p/YS3qjGt3paY Playground
+
+* OOP
+👍 polymorphism
+.code contents/code/polymorphism/polymorphism.go /START1/,/END1/
+.link https://play.golang.org/p/2oAl6_Vv7g8 Playground
+
+* OOP
+👍 dependency injection (DI)
+.code contents/code/di/di.go /START1/,/END1/
+.link https://play.golang.org/p/lkV3VOUfhnG Playground - Example 1
+.link https://play.golang.org/p/bcG847aTCpM Playground - Example 2
+
+
+* Key-Value store
+Create an in-memory key-value store:
+
+- *Set* (key string, value int)
+- *Get* (key string) (value int, found bool)
+- *Delete* (key string)
+
+* Key-Value store
+Create the Key-Value store struct:
+.code contents/code/keyvaluestore/keyvaluestore.go /START1/,/END1/
+
+* Key-Value store
+Create the Key-Value store constructor:
+.code contents/code/keyvaluestore/keyvaluestore.go /START2/,/END2/
+
+* Key-Value store
+Create the Key-Value store methods:
+.code contents/code/keyvaluestore/keyvaluestore.go /START3/,/END3/
+
+* Key-Value store
+Add persistance:
+.code contents/code/keyvaluestore/persistance.go /START2/,/END2/
+
+* Key-Value store
+Add persistance:
+.code contents/code/keyvaluestore/persistance.go /START1/,/END1/
+
+* Exercise 6
+
+Add unit tests to the Key-Value store
+
+* Exercise 7
+
+Use the Key-Value store to count the number of /api/books requests by ip address in the web server project
+
+* CLI
+use os.Args:
+.code contents/code/args/args.go
+.link https://gobyexample.com/command-line-arguments Command-Line Arguments
+
+* Exercise 8
+Create a sum application that sums the given arguments.
+Example:
+
+    sum 32 48 7 15
+
+Expected result:
+
+    102
+
+* Type conversion
+
+- int to int64	    →	n := int64(156)
+- string to int	    →	n, err := strconv.Atoi("27")
+- string to int64	→	n, err := strconv.ParseInt("27", 10, 64)
+- int to string	    →	s := strconv.Itoa(n)
+- string to float32	→	f, err := strconv.ParseFloat("3.14159", 32)
+- float to string	→ 	s := fmt.Sprintf("my value is %f", 123.456)
+- string to bool	→	b, err := strconv.ParseBool("true")
+- any to string	    →	s := fmt.Sprint(x)
+
+* CLI
+Use the default flag library:
+.code contents/code/flag/flag.go
+
+* Exercise 9
+Create a CLI application to get the current time date according to the given format:
+
+    getTime -format=<format>
+
+Format can contain:
+    - dd: Day (1-31)
+    - mm: Month (1-12)
+    - yy: Year (on 2 digits) 
+    - yyyy: Year (on 4 digits)
+    - HH: Hour
+    - MM: Minute
+    - SS: Second
+    - Slash (/), underscore (_), hyphen (-)
+
+* Time
+
+Get the current date-time:
+
+    t := time.Now()
+
+Create a new date-time
+
+    t = time.Date(2022, time.August, 11, 13, 15, 30, 0, time.UTC)
+
+Timestamp:
+
+    t := time.Now().Unix()  // number of seconds since 01.01.1970 
+
+Go handles time in int64.
+
+*Remark:* If a signed 32-bit integer is used to store Unix time, the latest time that can be stored is 231 − 1 (2,147,483,647) seconds after epoch, which is 03:14:07 on Tuesday, 19 January 2038.
+
+* Time
+String:
+
+    time.Now().String() // 2022-08-11 13:15:30 +0000 UTC m=+0.000000001
+
+Format:
+
+    time.Now().Format("2 January 2006 15:04") // 11 August 2009 13:15
+
+.link https://programming.guide/go/format-parse-string-time-date-example.html Time Format
+
+* Exercise 10
+*swiss-town-guess-game* is a game in terminal mode:
+
+- The application must ask the user in which canton is a Swiss locality randomly selected on the swisspost site
+- Several suggestions are proposed to the user who selects one by indicating his code (1 or 2 ...)
+- When all questions have been answered, the application displays the score (for instance: you answered correctly 3/5 questions)
+- At startup, the application must ask the user to enter his API-KEY confidentially (no echo)
+
+* Exercise 10
+Use this list of cantons:
+.code contents/code/cantondata/list.go /START1/,/END1/
+
+* Exercise 10
+.code contents/code/cantondata/list.go /START2/,/END2/
+
+* Exercise 10
+Challenge 1: *Enter*API-KEY*confidentially*(no*echo)*
+
+- use the following library:
+
+    golang.org/x/term
+
+* Exercise 10
+Challenge 2: *Get*information*from*swisspost*and*unmarshal*it*into*a*Go*struct*
+
+- Create your own account by Swisspost
+- Generate a new Key in the API-Keys tabs of your account
+- Send a [GET] request with a random BFS-Nr (between 1 and 6810)
+- URL is (replace <bfsnr> and <key>):
+
+.code contents/code/swisspost/controller.go /START5/,/END5/
+
+- Use resty to simplify sending the request:
+
+.code contents/code/swisspost/controller.go /START3/,/END3/
+
+* Exercise 10
+Challenge 2:
+
+- Create a Go struct that matches the response from the swisspost:
+
+.code contents/code/swisspost/model.go /START2/,/END2/
+
+* Exercise 10
+Challenge 2:
+
+- Read the response:
+
+.code contents/code/swisspost/controller.go /START4/,/END4/
+
+* Exercise 10
+Challenge 3: *Avoid*having*the*same*canton*several*times*in*the*list*of*suggestions*
+
+- Use for instance a map
+
+* Exercise 10
+Challenge 4: *Display*random*suggestions*
+
+- You can for instance use rand.shuffle (where res is []string):
+
+.code contents/code/swisspost/controller.go /START6/,/END6/
+
+*Remark:*
+Don't forget to initialize (only once) the randomization with Seed, for instance with the current Unix timestamp
+
+* Exercise 10
+Game extension 1:
+
+Add arguments that can be read at application startup and the corresponding implementation:
+
+- *nbQuestions* to define how many questions will be asked
+- *nbSuggestions* allowing to define how many suggestions will be proposed
+- *timeoutApp* to define how much time the user has to answer all questions
+- *timeoutQuest* to define how much time the user has per question
+- *apiKey* allowing to indicate the key from the start and to deactivate the confidential question implemented beforehand
+
+* Exercise 10
+Game extension 2:
+
+Use color to display messages (red for errors, ...)
+.link https://twin.sh/articles/35/how-to-add-colors-to-your-console-terminal-output-in-go How-To
+
+Other ideas ?
+
+* Exercise 10
+Possible solutions:
+.link https://github.com/rosenbee/swiss-town-guess-game Solution 1 (procedural)
+.link https://github.com/bit-en5/swisstowngame Solution 2 (OOP)
+
+: * Embed a SQLite database
+: .link https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/05.3.html Tutorial
+
+: * Functional Programming
